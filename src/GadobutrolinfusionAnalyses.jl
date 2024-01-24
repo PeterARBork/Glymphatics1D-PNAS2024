@@ -219,6 +219,7 @@ function parseandanalyzeGadobutrolinfusion(
 
     # animate the main model
     println("animate solution")
+    gr()
     simani = animate_solution_mass(
         sim.ode_solution,
         sim.posterior_parameters,
