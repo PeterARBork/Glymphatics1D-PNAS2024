@@ -91,21 +91,21 @@ brain_int(sol, p) = Array(sol)[1:end-3, :]' * p.Δr * p.S * ones(length(p.r_spac
 
 @model function posteriorsamplergeneratorCserr(timepoints, data, prob, parameters)
 
-    σ_brain_mass ~ Uniform(0.0, 20)
-    σ_csf_mass ~ Uniform(0.0, 2)
+    σ_brain_mass ~ Uniform(0.0, parameters.overline_o_bm_Cserr)
+    σ_csf_mass ~ Uniform(0.0, parameters.overline_o_c_Cserr)
 
     if parameters.estimate_D
-        D ~ truncated(LogNormal(log(parameters.μ_D), parameters.τ_D^2), 0.01, 20)
+        D ~ truncated(LogNormal(log(parameters.μ_D), parameters.τ_D^2), parameters.D_lower, parameters.D_upper)
     else
         D = parameters.μ_D
     end
     if parameters.estimate_Dm
-        D_m ~ Uniform(0.0, 0.5) # truncated(LogNormal(log(0.05), 0.5^2), 0.0, 3.0)
+        D_m ~ Uniform(0.0, parameters.overline_D_m)
     else
         D_m = parameters.D_m
     end
     if parameters.estimate_v
-        v ~ truncated(Normal(0.0, 0.50), -2.0, 2.0)
+        v ~ truncated(Normal(0.0, parameters.τ_v), -parameters.v_truncation, parameters.v_truncation)
     else
         v = parameters.v
     end
@@ -150,7 +150,7 @@ brain_int(sol, p) = Array(sol)[1:end-3, :]' * p.Δr * p.S * ones(length(p.r_spac
     sol = solve(re_prob, alg_hints=[:stiff], saveat=timepoints, reltol=1e-2)
     if sol.retcode != :Success
         println(sol.retcode)
-        println("(D, Dm, v) = ", string(D), ", ", string(Dm), ", ", string(v), ")")
+        println("(D, D_m, v) = ", string(D), ", ", string(D_m), ", ", string(v), ")")
         Turing.@addlogprob! -Inf
         return
     end
@@ -171,21 +171,21 @@ end
 
 @model function posteriorsamplergeneratorPla(timepoints, data, prob, parameters)
 
-    σ_brain_mass ~ Uniform(0.0, 5.0)
-    σ_blood ~ Uniform(0.0, 0.01)
+    σ_brain_mass ~ Uniform(0.0, parameters.overline_o_bm_Pla)
+    σ_blood ~ Uniform(0.0, parameters.overline_o_bl_Pla)
 
     if parameters.estimate_D
-        D ~ truncated(LogNormal(log(parameters.μ_D), 0.5^2), 0.01, 20)
+        D ~ truncated(LogNormal(log(parameters.μ_D), parameters.τ_D^2), parameters.D_lower, parameters.D_upper)
     else
         D = parameters.μ_D
     end
     if parameters.estimate_Dm
-        D_m ~ Uniform(0.0, 0.5) # truncated(LogNormal(log(0.05), 0.5^2), 0.0, 3.0)
+        D_m ~ Uniform(0.0, parameters.overline_D_m)
     else
         D_m = parameters.D_m
     end
     if parameters.estimate_v
-        v ~ truncated(Normal(0.0, 0.50), -2.0, 2.0)
+        v ~ truncated(Normal(0.0, parameters.τ_v), -parameters.v_truncation, parameters.v_truncation)
     else
         v = parameters.v
     end
@@ -228,7 +228,7 @@ end
     sol = solve(re_prob, alg_hints=[:stiff], saveat=timepoints, reltol=1e-2)
     if sol.retcode != :Success
         println(sol.retcode)
-        println("(D, Dm, v) = ", string(D), ", ", string(Dm), ", ", string(v), ")")
+        println("(D, D_m, v) = ", string(D), ", ", string(D_m), ", ", string(v), ")")
         Turing.@addlogprob! -Inf
         return
     end
@@ -253,22 +253,22 @@ end
 
 @model function posteriorsamplergeneratorGadobutrolinfusion(timepoints, data, prob, parameters)
 
-    σ_brain_conc ~ Uniform(0.0, 25)
-    σ_vent ~ Uniform(0.0, 180)
-    σ_csf_conc ~ Uniform(0.0, 200)
+    σ_brain_conc ~ Uniform(0.0, parameters.overline_o_b_Bork)
+    σ_vent ~ Uniform(0.0, parameters.overline_o_v_Bork)
+    σ_csf_conc ~ Uniform(0.0, parameters.overline_o_c_Bork)
 
     if parameters.estimate_D
-        D ~ truncated(LogNormal(log(parameters.μ_D), 0.5^2), 0.01, 20)
+        D ~ truncated(LogNormal(log(parameters.μ_D), parameters.τ_D^2), parameters.D_lower, parameters.D_upper)
     else
         D = parameters.μ_D
     end
     if parameters.estimate_Dm
-        D_m ~ Uniform(0.0, 0.5) # truncated(LogNormal(log(0.05), 0.5^2), 0.0, 3.0)
+        D_m ~ Uniform(0.0, parameters.overline_D_m)
     else
         D_m = parameters.D_m
     end
     if parameters.estimate_v
-        v ~ truncated(Normal(0.0, 0.50), -2.0, 2.0)
+        v ~ truncated(Normal(0.0, parameters.τ_v), -parameters.v_truncation, parameters.v_truncation)
     else
         v = parameters.v
     end
@@ -311,7 +311,7 @@ end
     sol = solve(re_prob, alg_hints=[:stiff], saveat=timepoints, reltol=1e-2)
     if sol.retcode != :Success
         println(sol.retcode)
-        println("(D, Dm, v) = ", string(D), ", ", string(Dm), ", ", string(v), ")")
+        println("(D, D_m, v) = ", string(D), ", ", string(D_m), ", ", string(v), ")")
         Turing.@addlogprob! -Inf
         return
     end

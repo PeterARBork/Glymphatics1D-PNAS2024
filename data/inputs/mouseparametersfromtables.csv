@@ -16,6 +16,12 @@ mu_D,0.46
 tau_D,0.5
 overline_D_m,1.0
 overline_o_bm_Pla,1.0
-overline_o_bl,0.01
+overline_o_bl_Pla,0.01
+overline_o_b_Bork,25
+overline_o_v_Bork,180
+overline_o_c_Bork,200
 Deltar,0.01
 T_max,4.5
+D_lower,0.01
+D_upper,20
+v_truncation,2

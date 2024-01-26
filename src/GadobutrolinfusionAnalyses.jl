@@ -58,7 +58,7 @@ function parseandanalyzeGadobutrolinfusion(
         gadobutrol_infusion_df[1, :c_v],
         gadobutrol_infusion_df[1, :c_c],
         0.0;
-        paramsfile="data/inputs/ratparametersfromtables.csv",
+        paramsfile="data/inputs/mouseparametersfromtables.csv",
         Turing_space_steps=Turing_space_steps,
         fitting_parameters=fitting_parameters,
         turingmodelgenerator=posteriorsamplergeneratorGadobutrolinfusion,

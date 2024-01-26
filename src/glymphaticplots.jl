@@ -279,8 +279,9 @@ function plotglymphaxis!(
         datadf[:, data_column],
         subplot=subplot,
         marker=:circle,
-        markersize=2,
+        markersize=3,
         markerstrokecolor=:green,
+        linewidth=2,
         color=:green,
         label="data",
         legend_background_color=:white,
@@ -463,7 +464,7 @@ function plotGadobutrol(
         legend=:topleft,
     )
     glymph_density!(
-        "Dm",
+        "D_m",
         chains,
         "10⁻² mm² / h",
         "";

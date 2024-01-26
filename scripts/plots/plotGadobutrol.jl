@@ -93,12 +93,22 @@ function gadobutrol_overviewplot(
         yticks=nothing,
         xticks=[0.2, 0.4, 0.6],
     )
+    plot!(
+        truncated(Normal(0.0, 1.0), -2, 2),
+        subplot=3,
+        label="prior",
+        color=:black,
+    )
+    _, xl = xlims(p[2])
+    plot!(
+        range(0, xl, length=5), ones(5), label="prior", color=:black,
+    )
 
     savefig(p, savedir_figure_overview * "$recordingID overview.pdf")
 
     jointp = makemarginalkdeplot(
         chains[:, :v, :],
-        chains[:, :Dm, :],
+        chains[:, :D_m, :],
         savedir_figures;
         scale_b=100,
         #left_margin=0px,

@@ -13,7 +13,7 @@ sim = parseandanalyzePladataset(
     (estimate_D=true, estimate_Dm=false, estimate_v=true),
 );
 
-parseandanalyzePladataset(
+@time parseandanalyzePladataset(
     (estimate_D=true, estimate_Dm=true, estimate_v=true, estimate_all_phys=false);
     #n_samples=100,
 );

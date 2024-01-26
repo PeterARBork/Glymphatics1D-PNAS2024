@@ -9,11 +9,11 @@ parseandanalyzeCserrdataset(
     (estimate_D=true, estimate_Dm=true, estimate_v=false),
 )
 
-parseandanalyzeCserrdataset(
+@time parseandanalyzeCserrdataset(
     (estimate_D=true, estimate_Dm=false, estimate_v=true, estimate_all_phys=false),
 )
 
-parseandanalyzeCserrdataset(
+@time parseandanalyzeCserrdataset(
     (estimate_D=true, estimate_Dm=true, estimate_v=true, estimate_all_phys=false),
 )
 

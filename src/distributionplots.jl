@@ -66,6 +66,7 @@ function glymph_density!(
     subplot::Int=1,
     scaleby::Float64=1.0,
     colorindex::Union{Missing, Integer, RGBA}=missing,
+    xlabeldistance=0.22,
     varargs...,
 )
     if !ismissing(colorindex)
@@ -80,13 +81,15 @@ function glymph_density!(
         xlabel="",
         ylabel="",
         subplot=subplot,
+        linewidth=2,
         #left_margin=-10px,
         legend_foreground_color=:white;
         pd...,
         varargs...
     )
+    param = replace(param, "_m" => "ₘ")
     xlabel=param * " [" * units * "]"
-    annotate!((0.5, -0.22), text(xlabel, 9, :center), subplot=subplot)
+    annotate!((0.5, -xlabeldistance), text(xlabel, 9, :center), subplot=subplot)
     ylabel="Pr(" * param * ")"
     annotate!((-0.1, 0.5), text(ylabel, 9, :center, rotation=90), subplot=subplot)
 end
