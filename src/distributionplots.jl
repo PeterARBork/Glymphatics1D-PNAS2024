@@ -5,8 +5,6 @@ function makemarginalkdeplot(
     visualizations_dir;
     clip=((-3, 3), (-3, 3)),
     scale_b=1,
-    left_margin=0px,
-    bottom_margin=0px,
     saveas="",
     subplot=1,
 )

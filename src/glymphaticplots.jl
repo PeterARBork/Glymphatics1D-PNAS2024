@@ -391,16 +391,6 @@ function plotGadobutrol(
         xticks=nothing,
         yticks=nothing,
     )
-    #=plotglymphaxis!(
-        datadf,
-        predsdf;
-        simulation_column="c_c_mean",
-        data_column="c_c",
-        cred_column_base="c_c",
-        subplot=1,
-        ylabel="SAS",
-        ylims=(minrow1, maxrow1),
-    )=#
     vthirdy = (maxrow1 - minrow1) / 3
     plotglymphaxis!(
         datadf,

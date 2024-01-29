@@ -139,8 +139,8 @@ begin
     end
 
     sp=2
-    glymph_density!("D", Cserr_chains, "mm² / h", "PEG-900"; subplot=sp, colorindex=3)
-    glymph_density!("D", Pla_chains, "mm² / h", "Pla"; subplot=sp, colorindex=lightorange)
+    glymph_density!("D", Cserr_chains, "mm² / h", "PEG-900"; subplot=sp, colorindex=3, xlabeldistance=0.16)
+    glymph_density!("D", Pla_chains, "mm² / h", "Pla"; subplot=sp, colorindex=lightorange, xlabeldistance=0.16)
     D = truncated(LogNormal(log(0.46), 0.5^2), 0.1, 20)
     p = plot!(
         D,
@@ -153,8 +153,8 @@ begin
     annotate!(-0.2 * xlims(p[sp])[2], 0.95 * ylims(p[sp])[2], "b", subplot=sp)
 
     sp = 3
-    glymph_density!("D_m", Cserr_chains, "10⁻² mm² / h", "PEG-900"; subplot=sp, scaleby=100.0, colorindex=3)
-    glymph_density!("D_m", Pla_chains, "10⁻² mm² / h", "Pla"; subplot=sp, scaleby=100.0, colorindex=lightorange)
+    glymph_density!("D_m", Cserr_chains, "10⁻² mm² / h", "PEG-900"; subplot=sp, scaleby=100.0, colorindex=3, xlabeldistance=0.16)
+    glymph_density!("D_m", Pla_chains, "10⁻² mm² / h", "Pla"; subplot=sp, scaleby=100.0, colorindex=lightorange, xlabeldistance=0.16)
     plot!(yticks=nothing, subplot=sp)
     _, xl = xlims(p[sp])
     plot!(range(0, xl, length=30), ones(30), subplot=sp, label="Prior", color="black")
@@ -162,8 +162,8 @@ begin
 
     sp = 4
     if :v in names(Cserr_chains)
-        glymph_density!("v", Cserr_chains, "mm / h", "PEG-900"; subplot=sp, colorindex=3)
-        glymph_density!("v", Pla_chains, "mm / h", "Pla"; subplot=sp, colorindex=lightorange)
+        glymph_density!("v", Cserr_chains, "mm / h", "PEG-900"; subplot=sp, colorindex=3, xlabeldistance=0.16)
+        glymph_density!("v", Pla_chains, "mm / h", "Pla"; subplot=sp, colorindex=lightorange, xlabeldistance=0.16)
         v = truncated(Normal(0.0, 1.0), -3, 3)
         plot!(v, label="Prior", color="black", subplot=sp, yticks=nothing)
         plot!(yticks=nothing, subplot=sp, legend=:topleft)
@@ -403,10 +403,11 @@ plot!(xticks=[0.0, 0.3, 0.6, 0.9], subplot=9)
 
 glymph_density!("D_m", Cserr_chains, "10⁻² mm² / h", ""; xlabeldistance=0.25, subplot=10, scaleby=100.0, xlims=(0.0, 0.1), yticks=nothing, color=PEG900_color)
 glymph_density!("D_m", Cserr_PEG4000_chains, "10⁻² mm² / h", ""; xlabeldistance=0.25, subplot=11, scaleby=100.0, xlims=(0.0, 0.1), yticks=nothing, color=PEG4000_color)
-glymph_density!("D_m", Cserr_albumin_chains, "10⁻² mm² / h", ""; xlabeldistance=0.25, subplot=12, scaleby=100.0, xlims=(0.0, 0.1), yticks=nothing, color=albumin_color)
+glymph_density!("D_m", Cserr_albumin_chains, "10⁻² mm² / h", ""; xlabeldistance=0.25, subplot=12, scaleby=100.0, xlims=(0.0, 1), yticks=nothing, color=albumin_color)
 for i in 10:12
     plot!(xticks=range(xlims(p[i])..., length=3), subplot=i)
 end
+
 
 glymph_density!("v", Cserr_chains, "mm / h", ""; xlabeldistance=0.25, subplot=13, color=PEG900_color)
 glymph_density!("v", Cserr_PEG4000_chains, "mm / h", ""; xlabeldistance=0.25, subplot=14, color=PEG4000_color)
@@ -429,7 +430,7 @@ savefig(p, savedir_figure_overview * "Cserr/postparams_preds_allweights.pdf")
 
 p1 = makemarginalkdeplot(
     Pla_chains[:, :v, :],
-    Pla_chains[:, :Dm, :],
+    Pla_chains[:, :D_m, :],
     savedir_figure_overview;
     clip=((-3.1, 3), (-2.5, 2.5)),
     scale_b=100,
@@ -438,29 +439,11 @@ p1 = makemarginalkdeplot(
 
 p4 = makemarginalkdeplot(
     Cserr_chains[:, :v, :],
-    Cserr_chains[:, :Dm, :],
+    Cserr_chains[:, :D_m, :],
     savedir_figure_overview;
     scale_b=100,
     #left_margin=0px,
     #bottom_margin=0px,
     clip=((-1.8, 3.5), (-3.5, 3.5)),
     saveas="Cserr joint posterior v Dm.pdf",
-)
-
-Gadobutrolinfusion_chains = read(
-    resultsdir * "gadobutrol_infusion/chains_D_Dm_v.jls",
-    Chains,
-)
-
-p = plot(layout=(1, 1))
-p4 = makemarginalkdeplot(
-    Gadobutrolinfusion_chains[:, :v, :],
-    Gadobutrolinfusion_chains[:, :Dm, :],
-    savedir_figure_overview;
-    scale_b=100,
-    #left_margin=0px,
-    #bottom_margin=0px,
-    clip=((-1.5, 3), (-3.5, 3)),
-    saveas="Gadobutrol joint posterior v Dm.pdf",
-    subplot=1,
 )

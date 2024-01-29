@@ -32,22 +32,31 @@ for recID in recordings
         xtickfontvalign=:bottom,
         ytickfonthalign=:left,
         bottom_margin=20px,
-        left_margin=10px,
+        left_margin=15px,
     )
 end
 #end
 display(p)
 
-fitting_parameters = (estimate_D=true, estimate_Dm=true, estimate_v=true)
-jointps = plot(layout=(3, 3))
 recID = recordings[1]
-savedir_results = "data/results/gadobutrol_infusion/$recID/"
+p = gadobutrol_overviewplot(
+    (estimate_D=true, estimate_Dm=true, estimate_v=true),
+    recID,
+    "data/parsed/gadobutrol_infusion_parsed.csv",
+    "data/results/gadobutrol_infusion/$recID/" * rob,
+    "visualizations/gadobutrol_infusion/$recID/" * rob,
+    "visualizations/gadobutrol_infusion/$recID/" * rob,
+    "data/inputs/gadobutrol intrastriatal/coronal horizontal line segment distances.csv",
+    xtickfontvalign=:bottom,
+    ytickfonthalign=:left,
+    bottom_margin=20px,
+    left_margin=15px,
+)
+
+savedir_figures = "visualizations/gadobutrol_infusion/$recID/"
 paramcombinationstring = makeparamcombinationstring(fitting_parameters)
 loadfile = savedir_results * "/chains" * paramcombinationstring * ".jls"
-chains = read(loadfile, Chains)
-
-lpp = pointwise_loglikelihoods(model, get_sections(chains, :parameters))
-
+chains = deserialize(loadfile)
 
 function gadobutrol_overviewplot(
     fitting_parameters=(estimate_D=true, estimate_Dm=true, estimate_v=true),
@@ -96,12 +105,17 @@ function gadobutrol_overviewplot(
     plot!(
         truncated(Normal(0.0, 1.0), -2, 2),
         subplot=3,
-        label="prior",
+        label="",
         color=:black,
+        xlims=xlims(p[3]),
     )
-    _, xl = xlims(p[2])
+    xl, xu = xlims(p[2])
     plot!(
-        range(0, xl, length=5), ones(5), label="prior", color=:black,
+        range(0, xu, length=5), ones(5),
+        label="",
+        color=:black,
+        subplot=2,
+        xlims=(xl, xu),
     )
 
     savefig(p, savedir_figure_overview * "$recordingID overview.pdf")

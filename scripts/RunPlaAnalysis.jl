@@ -24,7 +24,6 @@ sim = parseandanalyzePladataset(
     savedir_results="data/results/Pla/robustness/",
     savedir_figures="visualizations/Pla/robustness/",
     data_label="Pla",
-    #turingmodelgenerator=posteriorsamplergeneratorPlaAllparams,
 );
 
 savedir_figures="visualizations/Pla/"
