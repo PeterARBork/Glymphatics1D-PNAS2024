@@ -431,19 +431,17 @@ savefig(p, savedir_figure_overview * "Cserr/postparams_preds_allweights.pdf")
 p1 = makemarginalkdeplot(
     Pla_chains[:, :v, :],
     Pla_chains[:, :D_m, :],
-    savedir_figure_overview;
+    visualizations_dir;
     clip=((-3.1, 3), (-2.5, 2.5)),
     scale_b=100,
-    saveas="Pla joint posterior v Dm.pdf",
+    saveas="Pla/joint posterior v Dm.pdf",
 )
 
 p4 = makemarginalkdeplot(
     Cserr_chains[:, :v, :],
     Cserr_chains[:, :D_m, :],
-    savedir_figure_overview;
+    visualizations_dir;
     scale_b=100,
-    #left_margin=0px,
-    #bottom_margin=0px,
-    clip=((-1.8, 3.5), (-3.5, 3.5)),
-    saveas="Cserr joint posterior v Dm.pdf",
+    clip=((-1.5, 3), (-3.5, 3)),
+    saveas="Cserr/joint posterior v Dm.pdf",
 )
